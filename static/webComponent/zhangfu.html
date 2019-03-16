@@ -1,0 +1,30 @@
+<script src="./x-tag.js"></script>
+<template>
+  <style>
+    .title {
+      color: red;
+    }
+  </style>
+  <h1 class="title"></h1>
+</template>
+<script>
+  (function() {
+    var thisDoc = document.currentScript.ownerDocument.querySelector('template').content;
+    xTag.register('zhangfu-div', {
+      lifecycle: {
+        created: function() {
+          var title = this.getAttribute('title');
+          this.setTitle(title);
+        },
+        attributeChanged: function(attr, oldVal, newVal) {
+          this.setTitle(newVal);
+        }
+      },
+      methods: {
+        setTitle: function(title) {
+          this.shadowRoot.querySelector('.title').innerText = title;
+        }
+      }
+    })
+  }());
+</script>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="name"></div>
+  <div id="age"></div>
+  <button id="btn">新数据</button>
+  <script src="./ajax.js"></script>
+  <script src="./moduleDriver.js"></script>
+  <script>
+    var request = ajax();
+    var data = null;
+    request.get('./data.json').then((data) => {
+      ModuleDriver.init(data, {
+        "name": ModuleDriver.module('#name', function() {
+          document.querySelector(this.view).innerHTML = this.model;
+        }),
+        "age": ModuleDriver.module('#age', function() {
+          document.querySelector(this.view).innerHTML = this.model;
+        })
+      });
+    });
+
+    document.querySelector('#btn').onclick = function() {
+      request.get('./data2.json').then((data) => {
+        ModuleDriver.load(data);
+      })
+    }
+  </script>
+</body>
+</html>
