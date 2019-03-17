@@ -1,0 +1,43 @@
+/* 基本布局样式 */
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #999;
+}
+.header {
+  height: .9rem;
+  overflow: hidden;
+  background-color: #fff;
+}
+.main {
+  background-color: #eee;
+  flex-grow: 1;
+  overflow: hidden;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.2rem;
+  background-color: #fff;
+}
+
+.mrgR60 {
+  margin-right: 0.6rem;
+}
+
+/* 座位状态组件 */
+.seatStatusList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1rem;
+}
+
+.seatStatusList .statusLabel img {
+  width: .5rem;
+  height: .4rem;
+  margin-right: .1rem;
+}
