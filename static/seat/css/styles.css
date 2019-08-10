@@ -144,3 +144,60 @@
   background-repeat: no-repeat;
   background-color: #999 !important;
 }
+
+/* actionSheet组件的样式 */
+.actionSheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: none;
+  z-index: 2000;
+}
+.actionSheet.open {
+  display: block;
+}
+.actionSheet .mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.actionSheet ul {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.actionSheet ul .noData {
+  text-align: center;
+}
+
+.actionSheet ul > .listItem {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  color: #333;
+}
+
+.actionSheet ul > li .closeBtn {
+  position: absolute;
+  right: 30px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  line-height: -24px;
+  background-color: #dd514c;
+}

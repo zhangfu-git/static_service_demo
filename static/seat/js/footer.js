@@ -99,7 +99,7 @@ var Footer = (function(factory) {
       if (res && res.total && res.count) {
         this._renderSelectedSeatInfo(res.total, res.count);
       } else {
-        new Error('formatData 返回的参数没有total和count');
+        this.resetStatus();
       }
     },
     // 重置初始化状态

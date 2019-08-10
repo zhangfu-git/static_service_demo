@@ -36,6 +36,11 @@ var Seat = (function(factory) {
 
       // 注册touch事件
       this._onTouchLayer();
+
+      this._onTouchSeat();
+
+      // 记录注册的事件集合
+      this.event = options.event;
     },
     // 组件布局
     _getDefaultTpl: function() {
@@ -208,6 +213,36 @@ var Seat = (function(factory) {
         }
       }, false)
     },
+    _onTouchSeat: function() {
+      var me = this;
+      this.layer.addEventListener('touchend', function (e) {
+        e.preventDefault();
+        var target = e.target;
+        var type = target.getAttribute('data-type');
+        var id = target.getAttribute('data-id');
+        var status = target.getAttribute('data-status');
+        var index = target.getAttribute('data-index');
+        var data = me.data;
+
+        if (type && type === 'seat') {
+          // 如果状态为0, 则可以进行选择
+          if (status == 0) {
+            // 检测当前是取消还是选中
+            if (target.className.indexOf('active') > -1) {
+              // 取消
+              target.className = target.className.replace('active', '');
+              target.style.backgroundColor = '#fff';
+              me._removeSelectedSeat(id, data[index], index);
+            } else {
+              // 选中
+              target.className = target.className + ' active';
+              target.style.backgroundColor = 'inherit';
+              me._addSelectedSeat(id, data[index], index);
+            }
+          }
+        }
+      }, false);
+    },
     _scaleLayer: function(origin, scale) {
       var x, y;
       x = origin.x + (-origin.x) * scale;
@@ -245,7 +280,6 @@ var Seat = (function(factory) {
       this.layer.style.transform = 'translate3d(' + this.layerLeft + 'px, ' + this.layerTop + 'px, 0) scale(' + me.scale + ')';
     },
     _resetTransFormLayer: function() {
-      console.log('执行了', this.oldLayerLeft, this.oldLayerTop, this.scale)
       this.layer.style.transform = 'translate3d(' + this.oldLayerLeft + 'px, ' + this.oldLayerTop + 'px, 0) scale(' + this.scale + ')';
       this.layerLeft = this.oldLayerLeft;
       this.layerTop = this.oldLayerTop;
@@ -259,7 +293,41 @@ var Seat = (function(factory) {
     _getDistance: function(start, stop) {
       return Math.sqrt(Math.pow((stop.x - start.x), 2) + Math.pow((stop.y - start.y), 2));
     },
-    setData: function(data) {
+    _addSelectedSeat: function(id, item, index) {
+      item.index = index;
+      this.selectedData.push(item);
+      this._onChange();
+    },
+    _removeSelectedSeat: function(id) {
+      var selectedData = this.selectedData;
+      var index = 0;
+      var i = 0;
+      var len = selectedData.length;
+      for (i; i < len; i++) {
+        if (selectedData[i].id === +id) {
+          index = i;
+          break;
+        }
+      }
+      selectedData.splice(index, 1);
+      this._onChange();
+    },
+    _onChange: function () {
+      var selectedData = this.selectedData;
+      console.log('当前选中的数据:', selectedData);
+      // 更外部抛出的onChange事件
+      typeof this.event.onChange === 'function' && this.event.onChange(selectedData);
+      // typeof this.onChange === 'function' && this.onChange(selectedData);
+    },
+    removeSeat: function (id) {
+      var target = document.querySelector('.seatId-' + id);
+      console.log('当前删除的id元素', target);
+
+      target.className = target.className.replace('active', '');
+      target.style.backgroundColor = '#fff';
+      this._removeSelectedSeat(id);
+    },
+    renderSeat: function(data) {
       this.data = data;
       this._renderSeat();
     }
